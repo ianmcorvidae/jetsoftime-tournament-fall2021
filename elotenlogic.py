@@ -25,11 +25,9 @@ def raceranks(races, startval=1500):
 
 if __name__ == "__main__":
     import races
-    #import pprint
-    import rasterlogic
-    #pprint.pprint([rasterlogic.numbered_byscore(r) for r in raceranks(races.races)])
+    import util 
     import sys
     rs = races.races
     if len(sys.argv) > 1 and sys.argv[1] == "--no-incomplete":
         rs = [r for r in races.races if not r.get("incomplete", False)]
-    print(rasterlogic.table(rs, raceranks(rs)))
+    print(util.table(rs, raceranks(rs)))
