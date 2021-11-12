@@ -1,0 +1,7 @@
+*.txt
+ctdb/
+GSD/
+__pycache__/
+vids/
+spoilerread.py
+*.swp
