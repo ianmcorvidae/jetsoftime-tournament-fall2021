@@ -9,8 +9,7 @@ races = [
         {"finishers": ['Xelpher', 'Chocosura', 'dipwood', 'lordbatsy', 'Janus', 'CivilChev', 'kalarse', 'Kyuketsuki', 'Anskiy', 'akuheish', 'Tekenu', 'AzureCale', 'MrScruffNinjaTuna'],
          "forfeits": ['Theferrell', 'smercjd', 'IBKarma', 'proccy'],
          "nonparticipants": []},
-        {"finishers": ['dipwood', 'Xelpher', 'kalarse', 'Chocosura', 'AzureCale', 'Korenth', 'Tekenu'],
-         "forfeits": ["smercjd", "Anskiy"],
-         "nonparticipants": [],
-         "incomplete": True}
+        {"finishers": ['dipwood', 'Xelpher', 'kalarse', 'Chocosura', 'AzureCale', 'Korenth', 'Tekenu', 'Theferrell', 'Kyuketsuki', 'CivilChev'],
+         "forfeits": ["smercjd", "Anskiy", "akuheish", "lordbatsy"],
+         "nonparticipants": []}
         ]
