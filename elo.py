@@ -12,7 +12,14 @@ class ELOPlayer:
 class ELOMatch:
     def __init__(self):
         self.players = []
+        self.knum = 32
     
+    def setKnum(self, knum):
+        if knum > 0:
+            self.knum = knum
+        else:
+            print("knum <=0 is invalid, keeping old value")
+
     def addPlayer(self, name, place, elo):
         player = ELOPlayer()
         
@@ -38,7 +45,7 @@ class ELOMatch:
  
     def calculateELOs(self):
         n = len(self.players)
-        K = 32 / (n - 1)
+        K = self.knum / (n - 1)
         for player in self.players:
             curPlace = player.place
             curELO   = player.eloPre
