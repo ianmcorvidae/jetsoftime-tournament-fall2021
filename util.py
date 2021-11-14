@@ -19,14 +19,14 @@ def numbered_byscore(ranks):
 
 def table(races, ranks):
     from tabulate import tabulate
-    cols = ['Player', 'Start']
+    cols = ['Place', 'Player', 'Start']
     for i in range(1, len(ranks)):
         cols.extend(['W' + str(i), '+/-'])
     tab = [[] for x in all_players(races)]
     ranks_by_score = byscore(ranks[-1])
     for i in range(len(ranks_by_score)):
         player = ranks_by_score[i][1]
-        tab[i] = [player, ranks[0].get(player, 0)]
+        tab[i] = [i+1, player, ranks[0].get(player, 0)]
         for j in range(1, len(ranks)):
             thisrank = int(ranks[j].get(player, 0))
             this_status0 = this_status1 = ''
