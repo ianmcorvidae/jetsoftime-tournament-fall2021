@@ -13,12 +13,20 @@ class ELOMatch:
     def __init__(self):
         self.players = []
         self.knum = 32
+        self.preround = True
+        self.changemult = 1
     
     def setKnum(self, knum):
         if knum > 0:
             self.knum = knum
         else:
             print("knum <=0 is invalid, keeping old value")
+
+    def setPreround(self, preround):
+        self.preround = preround
+
+    def setChangeMultiplier(self, changemult):
+        self.changemult = changemult
 
     def addPlayer(self, name, place, elo):
         player = ELOPlayer()
@@ -70,7 +78,13 @@ class ELOMatch:
                 
                 #calculate ELO change vs this one opponent, add it to our change bucket
                 #I currently round at this point, this keeps rounding changes symetrical between EA and EB, but changes K more than it should
-                player.eloChange += round(K * (S - EA))
+                if self.preround:
+                    player.eloChange += round(self.changemult * K * (S - EA))
+                else:
+                    player.eloChange += self.changemult * K * (S - EA)
 
             #add accumulated change to initial ELO for final ELO   
-            player.eloPost = player.eloPre + player.eloChange
+            if self.preround:
+                player.eloPost = player.eloPre + player.eloChange
+            else:
+                player.eloPost = player.eloPre + round(player.eloChange)

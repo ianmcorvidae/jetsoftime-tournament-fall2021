@@ -17,7 +17,7 @@ def numbered_byscore(ranks):
     bs = byscore(ranks)
     return [(i+1, bs[i][0], bs[i][1]) for i in range(len(bs))]
 
-def table(races, ranks):
+def table(races, ranks, startval=0):
     from tabulate import tabulate
     cols = ['Place', 'Player', 'Start']
     for i in range(1, len(ranks)):
@@ -26,14 +26,14 @@ def table(races, ranks):
     ranks_by_score = byscore(ranks[-1])
     for i in range(len(ranks_by_score)):
         player = ranks_by_score[i][1]
-        tab[i] = [i+1, player, ranks[0].get(player, 0)]
+        tab[i] = [i+1, player, ranks[0].get(player, startval)]
         for j in range(1, len(ranks)):
-            thisrank = int(ranks[j].get(player, 0))
+            thisrank = int(ranks[j].get(player, startval))
             this_status0 = this_status1 = ''
             if player in races[j-1]["forfeits"]:
                 this_status1 = '^'
             elif player not in races[j-1]["finishers"]:
                 this_status0 = '('
                 this_status1 = ')'
-            tab[i].extend([thisrank, '{0}{1:+}{2}'.format(this_status0, int(thisrank - ranks[j-1].get(player, 0)), this_status1)])
+            tab[i].extend([thisrank, '{0}{1:+}{2}'.format(this_status0, int(thisrank - ranks[j-1].get(player, startval)), this_status1)])
     return tabulate(tab, headers=cols, disable_numparse=True)

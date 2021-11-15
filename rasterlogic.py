@@ -7,9 +7,9 @@ def rankdiff(nplay, expected, actual):
 def expected(nplay, rank, otherranks, denom):
     return ((nplay * rank - sum(otherranks))/nplay)/denom
 
-def all_expected(race, ranks, denom):
+def all_expected(race, ranks, denom, startval=0):
     players = set(race["finishers"]) | set(race["forfeits"])
-    return dict([(player, expected(len(players), ranks.get(player, 0), [ranks.get(p,0) for p in players if p != player], denom)) for player in players])
+    return dict([(player, expected(len(players), ranks.get(player, startval), [ranks.get(p,startval) for p in players if p != player], denom)) for player in players])
 
 def actuals(race, maxscore=100, minscore=10, step=-10, forfeitscore=0):
     topscores = list(range(maxscore, minscore+1, step)) # +1 so minscore isn't included
@@ -27,8 +27,8 @@ def actuals(race, maxscore=100, minscore=10, step=-10, forfeitscore=0):
             print("player shouldn't have appeared", player, race)
     return scores
 
-def rankdiffs(race, ranks, denom, denom_as_nplay=False, maxscore=100, minscore=10, step=-10, forfeitscore=0):
-    ex = all_expected(race, ranks, denom)
+def rankdiffs(race, ranks, denom, denom_as_nplay=False, maxscore=100, minscore=10, step=-10, forfeitscore=0, startval=0):
+    ex = all_expected(race, ranks, denom, startval=startval)
     ac = actuals(race, maxscore, minscore, step, forfeitscore)
     #print(ex,ac)
     r = dict()
@@ -45,15 +45,16 @@ def first_race_denom(race):
 def raceranks(races, startval=0, maxscore=100, minscore=10, step=-10, forfeitscore=0):
     denom = first_race_denom(races[0])
     ranks = [dict([(p, startval) for p in util.all_players(races)])] + [None for r in range(len(races))]
-    ranks[1] = rankdiffs(races[0], ranks[0], denom, True, maxscore, minscore, step, forfeitscore)
+    ranks[1] = rankdiffs(races[0], ranks[0], denom, True, maxscore, minscore, step, forfeitscore, startval=startval)
     for r in range(1,len(races)):
         race = races[r]
         ranks[r+1] = copy.deepcopy(ranks[r])    
         finishers = set(race["finishers"])
         forfeits = set(race["forfeits"])
-        diffs = rankdiffs(races[r], ranks[r], denom, False, maxscore, minscore, step, forfeitscore)
+        diffs = rankdiffs(races[r], ranks[r], denom, False, maxscore, minscore, step, forfeitscore, startval=startval)
         for player in diffs.keys():
-            ranks[r+1][player] = int(round(ranks[r+1].get(player, 0) + diffs[player]))
+            print(r, player, diffs[player])
+            ranks[r+1][player] = int(round(ranks[r+1].get(player, startval) + diffs[player]))
     return ranks
 
 if __name__ == "__main__":
