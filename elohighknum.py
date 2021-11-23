@@ -1,14 +1,9 @@
 import copy
 import elo
-
-def all_participating_players(races):
-    all_players = set()
-    for race in races:
-        all_players = all_players | set(race['finishers']) | set(race['forfeits'])
-    return all_players
+import util
 
 def raceranks(races, startval=1500):
-    ranks = [dict([(p, startval) for p in all_participating_players(races)])] + [None for r in range(len(races))]
+    ranks = [dict([(p, startval) for p in util.all_participating_players(races)])] + [None for r in range(len(races))]
     for r in range(len(races)):
         match = elo.ELOMatch()
         match.setKnum(128)
