@@ -9,14 +9,26 @@ def raceranks(races, startval=1500):
         match.setPreround(False)
         match.setChangeMultiplier(3)
         race = races[r]
-        for i in range(len(race["finishers"])):
-            player = race["finishers"][i]
-            match.addPlayer(player, i+1, ranks[r].get(player, startval))
+        if isinstance(race["finishers"], list):
+            for i in range(len(race["finishers"])):
+                player = race["finishers"][i]
+                match.addPlayer(player, i+1, ranks[r].get(player, startval))
+        elif isinstance(race["finishers"], dict):
+            skip = 0
+            for k in sorted(race["finishers"].keys()):
+                # k is place, but if there's skips we have to offset
+                if isinstance(race["finishers"][k], list):
+                    for player in race["finishers"][k]:
+                        match.addPlayer(player, k-skip, ranks[r].get(player, startval))
+                    skip = skip + len(race["finishers"][k]) - 1 # offset by tied players, minus 1, for next loops
+                else:
+                    player = race["finishers"][k]
+                    match.addPlayer(player, k-skip, ranks[r].get(player, startval))
         for player in race["forfeits"]:
-            match.addPlayer(player, len(race["finishers"])+1, ranks[r].get(player, startval))
+            match.addPlayer(player, len(util.finishers(race))+1, ranks[r].get(player, startval))
         match.calculateELOs()
         ranks[r+1] = copy.deepcopy(ranks[r])
-        for player in race["finishers"] + race["forfeits"]:
+        for player in util.finishers(race) | set(race["forfeits"]):
             ranks[r+1][player] = match.getELO(player)
     return ranks
 
