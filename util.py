@@ -1,14 +1,42 @@
 def all_participating_players(races):
     all_players = set()
     for race in races:
-        all_players = all_players | set(race['finishers']) | set(race['forfeits'])
+        if isinstance(race['finishers'], list):
+            all_players = all_players | set(race['finishers']) | set(race['forfeits'])
+        elif isinstance(race['finishers'], dict):
+            all_players = all_players | set(race['forfeits'])
+            for k in race['finishers'].keys():
+                if isinstance(race['finishers'][k], list):
+                    all_players = all_players | set(race['finishers'][k])
+                else:
+                    all_players.add(race['finishers'][k])
     return all_players
 
 def all_players(races):
      all_players = set()
      for race in races:
+        if isinstance(race['finishers'], list):
              all_players = all_players | set(race['finishers']) | set(race['forfeits']) | set(race['nonparticipants'])
+        elif isinstance(race['finishers'], dict):
+            all_players = all_players | set(race['forfeits']) | set(race['nonparticipants'])
+            for k in race['finishers'].keys():
+                if isinstance(race['finishers'][k], list):
+                    all_players = all_players | set(race['finishers'][k])
+                else:
+                    all_players.add(race['finishers'][k])
      return all_players
+
+def finishers(race):
+    if isinstance(race['finishers'], list):
+        return set(race['finishers'])
+    elif isinstance(race['finishers'], dict):
+        fin = set()
+        for k in race['finishers'].keys():
+            if isinstance(race['finishers'][k], list):
+                fin = fin | set(race['finishers'][k])
+            else:
+                fin.add(race['finishers'][k])
+        return fin
 
 def byscore(ranks):
     return sorted([(v, k) for k,v in ranks.items()], reverse=True)
@@ -32,7 +60,7 @@ def table(races, ranks, startval=0):
             this_status0 = this_status1 = ''
             if player in races[j-1]["forfeits"]:
                 this_status1 = '^'
-            elif player not in races[j-1]["finishers"]:
+            elif player not in finishers(races[j-1]):
                 this_status0 = '('
                 this_status1 = ')'
             tab[i].extend([thisrank, '{0}{1:+}{2}'.format(this_status0, int(thisrank - ranks[j-1].get(player, startval)), this_status1)])

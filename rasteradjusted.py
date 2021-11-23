@@ -1,6 +1,7 @@
 import copy
 import rasterlogic
 import util
+import decimal
 
 def adjusted_expected_meandiff(expected, actuals, maxscore=100, minscore=10):
     mean_actual = sum(actuals.values())/len(actuals.values())
@@ -48,11 +49,11 @@ def raceranks(races, startval=0, maxscore=100, minscore=10, step=-10, forfeitsco
     for r in range(1,len(races)):
         race = races[r]
         ranks[r+1] = copy.deepcopy(ranks[r])    
-        finishers = set(race["finishers"])
+        finishers = util.finishers(race)
         forfeits = set(race["forfeits"])
         diffs = rankdiffs(races[r], ranks[r], denom, False, maxscore, minscore, step, forfeitscore)
         for player in diffs.keys():
-            ranks[r+1][player] = int(round(ranks[r+1].get(player, startval) + diffs[player]))
+            ranks[r+1][player] = int(decimal.Decimal(ranks[r+1].get(player, startval) + diffs[player]).quantize(decimal.Decimal('1'), rounding=decimal.ROUND_HALF_UP))
     return ranks
 
 if __name__ == "__main__":
