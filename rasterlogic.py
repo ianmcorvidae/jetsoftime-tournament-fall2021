@@ -74,4 +74,7 @@ if __name__ == "__main__":
     rs = races.races
     if len(sys.argv) > 1 and sys.argv[1] == "--no-incomplete":
         rs = [r for r in races.races if not r.get("incomplete", False)]
+    if len(sys.argv) > 1 and sys.argv[1] == "--plot":
+        import graph
+        graph.graph(rs, raceranks(rs))
     print(util.table(rs, raceranks(rs)))
