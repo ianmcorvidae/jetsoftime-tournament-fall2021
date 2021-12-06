@@ -1,3 +1,7 @@
+Usage:
+
+`python3 cmdline.py --help` should tell you what you need to know hopefully
+
 Current race scoring logic:
 ![current logic](./img/raster.png)
 
