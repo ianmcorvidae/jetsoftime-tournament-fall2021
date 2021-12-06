@@ -10,6 +10,9 @@ if __name__ == "__main__":
     noincomplete = "--no-incomplete" in sys.argv
     plot = "--plot" in sys.argv
     filter_too_few = "--filter" in sys.argv
+    of = None
+    if '--output-file' in sys.argv:
+        of = sys.argv[sys.argv.index('--output-file') + 1]
     rs = races.races
     raceranks = None
     startval = 0
@@ -63,6 +66,6 @@ if __name__ == "__main__":
         sys.exit(1)
     if plot:
         import graph
-        graph.graph(rs, raceranks(rs, startval=startval), startval=startval, title=lt, exclude=exclude)
+        graph.graph(rs, raceranks(rs, startval=startval), startval=startval, title=lt, exclude=exclude, output_file=of)
     print(util.table(rs, raceranks(rs, startval=startval), startval=startval, exclude=exclude))
 
