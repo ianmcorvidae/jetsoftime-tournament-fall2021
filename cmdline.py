@@ -41,6 +41,7 @@ def get_settings(logic):
     elif lt == "raster1500":
         import raster1500
         raceranks = raster1500.raceranks
+        startval = 1500
     elif lt == "rasterfantasy":
         import rasterfantasy
         raceranks = rasterfantasy.raceranks
