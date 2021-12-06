@@ -45,13 +45,13 @@ def make_ordinal(n):
         suffix = ['th', 'st', 'nd', 'rd', 'th'][min(n % 10, 4)]
     return str(n) + suffix
 
-def table(races, ranks, startval=0):
+def table(races, ranks, startval=0, exclude=[]):
     from tabulate import tabulate
     cols = ['Place', 'Player', 'Start']
     for i in range(1, len(ranks)):
         cols.extend(['W' + str(i), '+/-'])
-    tab = [[] for x in all_players(races)]
-    ranks_by_score = byscore(ranks[-1])
+    tab = [[] for x in (all_players(races) - set(exclude))]
+    ranks_by_score = [rk for rk in byscore(ranks[-1]) if rk[1] not in exclude]
     lastplaces = dict(zip([x[1] for x in byscore(ranks[0])], range(len(ranks[0]))))
     for i in range(len(ranks_by_score)):
         player = ranks_by_score[i][1]

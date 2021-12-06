@@ -42,4 +42,3 @@ if __name__ == "__main__":
         import graph
         graph.graph(rs, raceranks(rs), startval=1500)
     print(util.table(rs, raceranks(rs), startval=1500))
-    print(util.table(rs, raceranks(rs), startval=1500))
