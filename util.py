@@ -45,6 +45,23 @@ def make_ordinal(n):
         suffix = ['th', 'st', 'nd', 'rd', 'th'][min(n % 10, 4)]
     return str(n) + suffix
 
+def places(one_ranks, exclude=[]):
+    place = -1
+    sranks = [rk for rk in byscore(one_ranks) if rk[1] not in exclude]
+    lastscore = None
+    out = {}
+    skip = 0
+    for score_player in sranks:
+        (score, player) = score_player
+        if score == lastscore:
+            skip = skip + 1
+        else:
+            place = place + 1 + skip
+            skip = 0
+        out[player] = place
+        lastscore = score
+    return out
+
 def table(races, ranks, startval=0, exclude=[]):
     from tabulate import tabulate
     cols = ['Place', 'Player', 'Start']
@@ -52,13 +69,14 @@ def table(races, ranks, startval=0, exclude=[]):
         cols.extend(['W' + str(i), '+/-'])
     tab = [[] for x in (all_players(races) - set(exclude))]
     ranks_by_score = [rk for rk in byscore(ranks[-1]) if rk[1] not in exclude]
-    lastplaces = dict(zip([x[1] for x in byscore(ranks[0])], range(len(ranks[0]))))
+    overall_places = places(ranks[-1], exclude)
+    lastplaces = places(ranks[0], exclude)
     for i in range(len(ranks_by_score)):
         player = ranks_by_score[i][1]
-        tab[i] = [make_ordinal(i+1), player, ranks[0].get(player, startval)]
+        tab[i] = [make_ordinal(overall_places[player]+1), player, ranks[0].get(player, startval)]
         for j in range(1, len(ranks)):
             thisrank = int(ranks[j].get(player, startval))
-            thisplaces = dict(zip([x[1] for x in byscore(ranks[j])], range(len(ranks[j]))))
+            thisplaces = places(ranks[j], exclude)
             thisplace = thisplaces.get(player, max(thisplaces.values())+1)
             lastplace = lastplaces.get(player, max(lastplaces.values())+1)
             this_status0 = this_status1 = diffstr = ''
