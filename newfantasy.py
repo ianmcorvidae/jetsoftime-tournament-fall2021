@@ -11,9 +11,7 @@ def expected(player, past_races, maxscore=100, minscore=10, step=-10, forfeitsco
     if player in past_participants:
         actuals = [rasterlogic.actuals(r, maxscore, minscore, step, forfeitscore) for r in past_races]
         player_actuals = [ac[player] for ac in actuals if player in ac]
-        #print("actuals", player, player_actuals)
         ex = max(sum(player_actuals)/len(player_actuals),10)
-    #print("expected", player, ex)
     return ex
 
 def all_expected(race, past_races, maxscore=100, minscore=10, step=-10, forfeitscore=0):
@@ -23,8 +21,6 @@ def all_expected(race, past_races, maxscore=100, minscore=10, step=-10, forfeits
 def rankdiff(actual, expected, nplay, place):
     # 1-indexed place needed, but we'll pass in 0-indexed
     p = place + 1
-    #print(actual, expected, p, (actual/expected) * (nplay - p) * 10, ((expected-actual)/expected) * (1-p) * 10)
-    #return (actual/expected) * (nplay - p) * 10 + ((expected - actual)/expected) * (1-p)*10
     return (actual/expected) * ((nplay - p) * 10 + (0 - p) * 10)
 
 def rankdiffs(race, past_races, ranks, denom, maxscore=100, minscore=10, step=-10, forfeitscore=0, startval=1500):
@@ -33,7 +29,6 @@ def rankdiffs(race, past_races, ranks, denom, maxscore=100, minscore=10, step=-1
     r = dict()
     nplay = len(ac.keys())
     for player in ac.keys():
-        #print("rankdiff:", player)
         place = None
         if isinstance(race["finishers"], list) and player in util.finishers(race):
             place = race["finishers"].index(player)
@@ -47,7 +42,6 @@ def rankdiffs(race, past_races, ranks, denom, maxscore=100, minscore=10, step=-1
         elif player in race["forfeits"]:
             place = len(util.finishers(race))+1
         r[player] = rankdiff(ac[player], ex[player], nplay, place)
-        #print(r[player])
     return r
 
 def raceranks(races, startval=1500, maxscore=100, minscore=10, step=-10, forfeitscore=0):
