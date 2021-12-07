@@ -2,7 +2,7 @@ import sys
 import races
 import util
 
-logics = ["elo", "elohighknum", "eloten", "ff6wc", "mariokart", "mariokartavg", "simpleavg", "raster", "rasteradjusted", "raster1500", "rasterfantasy"]
+logics = ["elo", "elohighknum", "eloten", "ff6wc", "mariokart", "mariokartavg", "simpleavg", "raster", "rasteradjusted", "raster1500", "rasterfantasy", "newfantasy"]
 
 def get_settings(logic):
     raceranks = None
@@ -45,6 +45,10 @@ def get_settings(logic):
     elif lt == "rasterfantasy":
         import rasterfantasy
         raceranks = rasterfantasy.raceranks
+    elif lt == "newfantasy":
+        import newfantasy
+        raceranks = newfantasy.raceranks
+        startval = 1500
     else:
         print("unrecognized logic type")
         sys.exit(1)

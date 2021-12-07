@@ -36,3 +36,6 @@ raster1500: like the current logic, but start at 1500
 
 rasterfantasy: (obsolete for now) the "fantasy ladder rankings" as they were originally implemented
 ![rasterfantasy](./img/rasterfantasy.png)
+
+newfantasy: new experimental "fantasy" rankings:
+![newfantasy](./img/newfantasy.png)
