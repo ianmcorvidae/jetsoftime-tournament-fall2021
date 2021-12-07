@@ -81,7 +81,8 @@ if __name__ == "__main__":
     if filter_too_few:
         for player in util.all_players(rs):
             player_races = sum([1 for r in rs if (player in util.finishers(r) or player in r["forfeits"])])
-            if len(rs) - player_races > 3:
+            complete_races = sum([1 for r in rs if not r.get("incomplete", False)])
+            if complete_races - player_races > 3:
                 exclude.append(player)
     if plot:
         import graph
