@@ -1,6 +1,7 @@
 import sys
 import races
 import util
+import preprocess
 
 logics = ["elo", "elohighknum", "eloten", "ff6wc", "mariokart", "mariokartavg", "simpleavg", "raster", "rasteradjusted", "raster1500", "rasterfantasy", "newfantasy"]
 
@@ -71,6 +72,7 @@ if __name__ == "__main__":
     noincomplete = "--no-incomplete" in sys.argv
     plot = "--plot" in sys.argv
     filter_too_few = "--filter" in sys.argv
+    drop_3 = "--drop-three" in sys.argv
     of = None
     if '--output-file' in sys.argv:
         of = sys.argv[sys.argv.index('--output-file') + 1]
@@ -78,6 +80,8 @@ if __name__ == "__main__":
     exclude = []
     if noincomplete:
         rs = [r for r in races.races if not r.get("incomplete", False)]
+    if drop_3:
+        rs = preprocess.drop_worst_n(rs, 3)
     if filter_too_few:
         for player in util.all_players(rs):
             player_races = sum([1 for r in rs if (player in util.finishers(r) or player in r["forfeits"])])
