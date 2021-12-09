@@ -39,3 +39,6 @@ rasterfantasy: (obsolete for now) the "fantasy ladder rankings" as they were ori
 
 newfantasy: new experimental "fantasy" rankings:
 ![newfantasy](./img/newfantasy.png)
+
+newfantasy2: new experimental "fantasy" rankings, take 2:
+![newfantasy2](./img/newfantasy2.png)
