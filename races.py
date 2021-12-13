@@ -17,5 +17,8 @@ races = [
          "nonparticipants": []},
         {"finishers": ["dipwood", "Xelpher", "Pseudoarc", "Chocosura", "AzureCale", "kalarse", "lordbatsy", "Kyuketsuki", "akuheish", "Tekenu", "Theferrell"],
          "forfeits": [],
+         "nonparticipants": []},
+        {"finishers": ["Pseudoarc","dipwood", "Xelpher", "AzureCale", "lordbatsy", "kalarse", "Tekenu"],
+         "forfeits": ["Chocosura", "akuheish", "Theferrell", "Kyuketsuki"],
          "nonparticipants": []}
         ]
