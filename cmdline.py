@@ -3,7 +3,7 @@ import races
 import util
 import preprocess
 
-logics = ["elo", "elohighknum", "eloten", "ff6wc", "mariokart", "mariokartavg", "simpleavg", "raster", "rasteradjusted", "raster1500", "rasterfantasy", "newfantasy", "newfantasy2"]
+logics = ["elo", "elohighknum", "elodesc", "eloasc", "eloten", "ff6wc", "mariokart", "mariokartavg", "simpleavg", "raster", "rasteradjusted", "raster1500", "rasterfantasy", "newfantasy", "newfantasy2"]
 
 def get_settings(logic):
     raceranks = None
@@ -15,6 +15,14 @@ def get_settings(logic):
     elif lt == "elohighknum":
         import elohighknum
         raceranks = elohighknum.raceranks
+        startval = 1500
+    elif lt == "elodesc":
+        import elodesc
+        raceranks = elodesc.raceranks
+        startval = 1500
+    elif lt == "eloasc":
+        import eloasc
+        raceranks = eloasc.raceranks
         startval = 1500
     elif lt == "eloten":
         import elotenlogic

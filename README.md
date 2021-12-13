@@ -13,6 +13,12 @@ elo: simple Multiplayer-ELO, starting at 1500
 elohighknum: like elo, but instead of K = 32/number of players, use 128/number of players
 ![elohighknum](./img/elohighknum.png)
 
+eloasc: like elo/elohighknum, but start at K=32/n then 64/n, etc. (K=32 * racenum / number of players)
+![eloasc](./img/eloasc.png)
+
+elodesc: like elodesc, but in reverse. use 32 * (10 - race num), or 32 * (number of races - race number) if more than 10
+![elodesc](./img/elodesc.png)
+
 eloten: like elo, but count 10th-and-greater places as all tied for 10th
 ![eloten](./img/eloten.png)
 
