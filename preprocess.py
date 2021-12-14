@@ -89,3 +89,15 @@ def drop_worst_n(races, n):
         new_r[r] = new
     return new_r
 
+def miss_is_forfeit(races):
+    new_r = [None for r in races]
+    participants = util.all_participating_players(races)
+    for r in range(len(races)):
+        race = races[r]
+        race_players = util.finishers(race) | set(race["forfeits"])
+        new = copy.deepcopy(races[r])
+        for player in participants:
+            if player not in race_players:
+                new["forfeits"].append(player)
+        new_r[r] = new
+    return new_r

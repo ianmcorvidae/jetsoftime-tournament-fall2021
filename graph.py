@@ -11,7 +11,7 @@ def graph(races, ranks, startval=0, title="Ranks", exclude=[], output_file=None)
         x = range(len(ranks))
         y = [r.get(player, startval) for r in ranks]
         plt.plot(x, y, label=player)
-    plt.legend()
+    plt.legend(loc='best', frameon=False)
     plt.title(title)
     if output_file is None:
         plt.show()

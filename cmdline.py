@@ -3,7 +3,7 @@ import races
 import util
 import preprocess
 
-logics = ["elo", "elohighknum", "elodesc", "eloasc", "eloten", "ff6wc", "mariokart", "mariokartavg", "simpleavg", "raster", "rasteradjusted", "raster1500", "rasterfantasy", "newfantasy", "newfantasy2"]
+logics = ["elo", "elohighknum", "elodesc", "eloasc", "eloten", "ff6wc", "f1", "mariokart", "mariokartavg", "simpleavg", "raster", "rasteradjusted", "raster1500", "rasterfantasy", "newfantasy", "newfantasy2", "normfit"]
 
 def get_settings(logic):
     raceranks = None
@@ -32,6 +32,9 @@ def get_settings(logic):
         import ff6wclogic
         raceranks = ff6wclogic.raceranks
         startval = 1500
+    elif lt == "f1":
+        import f1
+        raceranks = f1.raceranks
     elif lt == "mariokart":
         import mariokart
         raceranks = mariokart.raceranks
@@ -62,6 +65,10 @@ def get_settings(logic):
         import newfantasy2
         raceranks = newfantasy2.raceranks
         startval = 1500
+    elif lt == "normfit":
+        import normfit
+        raceranks = normfit.raceranks
+        startval = 500
     else:
         print("unrecognized logic type")
         sys.exit(1)
@@ -85,6 +92,7 @@ if __name__ == "__main__":
     plot = "--plot" in sys.argv
     filter_too_few = "--filter" in sys.argv
     drop_3 = "--drop-three" in sys.argv
+    miss_forfeit = "--miss-is-forfeit" in sys.argv
     of = None
     if '--output-file' in sys.argv:
         of = sys.argv[sys.argv.index('--output-file') + 1]
@@ -92,16 +100,25 @@ if __name__ == "__main__":
     exclude = []
     if noincomplete:
         rs = [r for r in races.races if not r.get("incomplete", False)]
-    if drop_3:
-        rs = preprocess.drop_worst_n(rs, 3)
     if filter_too_few:
         for player in util.all_players(rs):
             player_races = sum([1 for r in rs if (player in util.finishers(r) or player in r["forfeits"])])
             complete_races = sum([1 for r in rs if not r.get("incomplete", False)])
             if complete_races - player_races > 3:
                 exclude.append(player)
+    if miss_forfeit:
+        rs = preprocess.miss_is_forfeit(rs)
+    if drop_3:
+        rs = preprocess.drop_worst_n(rs, 3)
     if plot:
         import graph
-        graph.graph(rs, raceranks(rs, startval=startval), startval=startval, title=lt, exclude=exclude, output_file=of)
+        title = lt
+        if filter_too_few:
+            title = title + " (excluding ineligible)"
+        if miss_forfeit:
+            title = title + " (misses are forfeits)"
+        if drop_3:
+            title = title + " (drop three worst placings)"
+        graph.graph(rs, raceranks(rs, startval=startval), startval=startval, title=title, exclude=exclude, output_file=of)
     print(util.table(rs, raceranks(rs, startval=startval), startval=startval, exclude=exclude))
 
