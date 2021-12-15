@@ -25,6 +25,9 @@ eloten: like elo, but count 10th-and-greater places as all tied for 10th
 ff6wc: like elo, but multiply elo changes by 3 and round all elo change values together, rather than individually
 ![ff6wc](./img/ff6wc.png)
 
+f1: like formula 1 scoring (as described by Tekenu)
+![f1](./img/f1.png)
+
 mariokart: places get a given score resembling Mario Kart; rank is the sum
 ![mariokart](./img/mariokart.png)
 
@@ -48,3 +51,6 @@ newfantasy: new experimental "fantasy" rankings:
 
 newfantasy2: new experimental "fantasy" rankings, take 2:
 ![newfantasy2](./img/newfantasy2.png)
+
+normfit: each week, fit finish times to a scipy.stats.skewnorm distribution; scores are multiplied percentiles. overall score is an exponentially weighted moving average with a starting value corresponding to 50th percentile and (for now) an alpha of 0.1
+![normfit](./img/normfit.png)

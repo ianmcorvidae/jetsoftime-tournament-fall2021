@@ -75,6 +75,9 @@ def get_settings(logic):
     return (raceranks, startval)
 
 if __name__ == "__main__":
+    if "--lt" in sys.argv:
+        print(" ".join(logics))
+        sys.exit(0)
     if "--help" in sys.argv:
         print("Usage: python3 cmdline.py <logic type> <args>")
         print("available logic types: " + ", ".join(logics))
