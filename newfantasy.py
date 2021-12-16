@@ -21,6 +21,7 @@ def all_expected(race, past_races, maxscore=100, minscore=10, step=-10, forfeits
 def rankdiff(actual, expected, nplay, place):
     # 1-indexed place needed, but we'll pass in 0-indexed
     p = place + 1
+    print(p, actual, expected, nplay, (actual/expected), (nplay-p), (0-p), (actual/expected) * ((nplay - p) * 10 + (0 - p) * 10))
     return (actual/expected) * ((nplay - p) * 10 + (0 - p) * 10)
 
 def rankdiffs(race, past_races, ranks, denom, maxscore=100, minscore=10, step=-10, forfeitscore=0, startval=1500):
@@ -29,6 +30,7 @@ def rankdiffs(race, past_races, ranks, denom, maxscore=100, minscore=10, step=-1
     r = dict()
     nplay = len(ac.keys())
     for player in ac.keys():
+        print(player)
         place = None
         if isinstance(race["finishers"], list) and player in util.finishers(race):
             place = race["finishers"].index(player)

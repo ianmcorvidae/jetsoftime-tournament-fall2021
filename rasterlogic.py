@@ -3,9 +3,11 @@ import util
 import decimal
 
 def rankdiff(nplay, expected, actual):
+    #print("\t", nplay, actual-expected)
     return nplay * (actual - expected)
 
 def expected(nplay, rank, otherranks, denom):
+    #print("\t", ((nplay * rank - sum(otherranks))/nplay)/denom, nplay * rank, sum(otherranks))
     return ((nplay * rank - sum(otherranks))/nplay)/denom
 
 def all_expected(race, ranks, denom, startval=0):
@@ -42,11 +44,12 @@ def actuals(race, maxscore=100, minscore=10, step=-10, forfeitscore=0):
 def rankdiffs(race, ranks, denom, denom_as_nplay=False, maxscore=100, minscore=10, step=-10, forfeitscore=0, startval=0):
     ex = all_expected(race, ranks, denom, startval=startval)
     ac = actuals(race, maxscore, minscore, step, forfeitscore)
-    #print(ex,ac)
     r = dict()
     nplay = len(ac.keys())
     if denom_as_nplay:
         nplay = denom
+    for (k, v) in util.byscore(ex):
+        print("{0}{1}ex:{2}\tac:{3}\tdiff:{4}".format(v, "\t" if len(v) > 7 else "\t\t", round(k,7), ac.get(v, None), round(rankdiff(nplay, k, ac.get(v,0)),7)))
     for player in ac.keys():
         r[player] = rankdiff(nplay, ex[player], ac[player])
     return r
@@ -57,9 +60,11 @@ def first_race_denom(race):
 def raceranks(races, startval=0, maxscore=100, minscore=10, step=-10, forfeitscore=0):
     denom = first_race_denom(races[0])
     ranks = [dict([(p, startval) for p in util.all_players(races)])] + [None for r in range(len(races))]
+    print("Race 1")
     ranks[1] = rankdiffs(races[0], ranks[0], denom, True, maxscore, minscore, step, forfeitscore, startval=startval)
     for r in range(1,len(races)):
         race = races[r]
+        print("Race " + str(r + 1))
         ranks[r+1] = copy.deepcopy(ranks[r])    
         finishers = util.finishers(race)
         forfeits = set(race["forfeits"])

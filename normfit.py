@@ -73,7 +73,7 @@ def raceranks(races, startval=500, forfeit=0, alpha=0.1):
             #else:
             diff = alpha * (ac[player] - ranks[r].get(player, startval))
             ranks[r+1][player] = ranks[r].get(player, startval) + diff
-            print(player, ranks[r][player], diff, ranks[r+1][player])
+            print(player, 'prev', ranks[r][player], 'diff', diff, 'new', ranks[r+1][player])
             #otherranks = [ranks[r].get(p, startval) for p in race_players if p != player]
             #ex = expected(ranks[r].get(player, startval), otherranks)
             #print("rankdiff", player, ex, ac.get(player, startval), rankdiff(len(race_players), ex, ac.get(player, startval)))
