@@ -52,5 +52,5 @@ newfantasy: new experimental "fantasy" rankings:
 newfantasy2: new experimental "fantasy" rankings, take 2:
 ![newfantasy2](./img/newfantasy2.png)
 
-normfit: each week, fit finish times to a scipy.stats.skewnorm distribution; scores are multiplied percentiles. overall score is an exponentially weighted moving average with a starting value corresponding to 50th percentile and (for now) an alpha of 0.1
+normfit: each week, fit finish times to a scipy.stats.skewnorm distribution; scores are multiplied percentiles. overall score is an exponentially weighted moving average with a starting value corresponding to 50th percentile and (for now) an alpha of 0.25
 ![normfit](./img/normfit.png)
