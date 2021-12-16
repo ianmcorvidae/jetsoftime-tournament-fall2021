@@ -14,7 +14,7 @@ def plot_race(race, label, filename, fn):
     fig, ax = plt.subplots(1,1)
     ax.xaxis.set_major_formatter(tick.FuncFormatter(lambda x, pos: (datetime.datetime.min + datetime.timedelta(seconds=x)).strftime("%H:%M:%S")))
     ax.plot(ts_arr, n.pdf(ts_arr), 'k-', lw=2, alpha=0.6, label='pdf')
-    ax.hist(ts_arr, density=True, alpha=0.2)
+    ax.hist(ts_arr, density=True, alpha=0.2, bins=15)
     ax.legend(loc='best', frameon=False)
     plt.title(label)
     plt.savefig(filename)

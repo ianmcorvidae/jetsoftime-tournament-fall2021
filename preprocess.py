@@ -97,7 +97,7 @@ def miss_is_forfeit(races):
         race_players = util.finishers(race) | set(race["forfeits"])
         new = copy.deepcopy(races[r])
         for player in participants:
-            if player not in race_players:
+            if not race.get("incomplete", False) and player not in race_players:
                 new["forfeits"].append(player)
         new_r[r] = new
     return new_r

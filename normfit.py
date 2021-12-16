@@ -58,7 +58,7 @@ def expected(rank, otherranks):
     return 100 * n.cdf(rank)
     #score(n, rank)
 
-def raceranks(races, startval=500, forfeit=0, alpha=0.1):
+def raceranks(races, startval=500, forfeit=0, alpha=0.25):
     ranks = [dict([(p, startval) for p in util.all_participating_players(races)])] + [None for r in range(len(races))]
 
     for r in range(len(races)):
