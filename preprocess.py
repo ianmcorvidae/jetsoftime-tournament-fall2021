@@ -44,7 +44,7 @@ def remove_from_race(race, player):
         r["forfeits"] = f
     return r
 
-def drop_worst_n(races, n):
+def drop_worst_n(races, n, bias_end=True):
     new_r = [None for r in races]
     player_placings = dict()
     player_min_n = dict()
@@ -72,13 +72,14 @@ def drop_worst_n(races, n):
                 toremove_idx = [placings[x] for x in min_n].index(toremove)
                 min_n[toremove_idx] = r
             elif placings[r] == max([placings[x] for x in min_n]):
-                # equal to existing min, so only replace if the max is higher
+                # equal to existing max, so replace if it's worse than the lowest placing, or always replace if we're end-biased
                 toremove = min([placings[x] for x in min_n])
-                if toremove < placings[r]:
+                if bias_end or (toremove < placings[r]):
                     toremove_idx = [placings[x] for x in min_n].index(toremove)
                     min_n[toremove_idx] = r
         player_placings[player] = placings
         player_min_n[player] = min_n
+        print(player, min_n)
 
     for r in range(len(races)):
         new = copy.deepcopy(races[r])
