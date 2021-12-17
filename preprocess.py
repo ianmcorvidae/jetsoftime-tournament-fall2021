@@ -44,7 +44,7 @@ def remove_from_race(race, player):
         r["forfeits"] = f
     return r
 
-def drop_worst_n(races, n, bias_end=True):
+def drop_worst_n(races, n, bias_end=False):
     new_r = [None for r in races]
     player_placings = dict()
     player_min_n = dict()
