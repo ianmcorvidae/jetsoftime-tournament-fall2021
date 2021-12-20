@@ -19,7 +19,7 @@ def racepoints(player, race):
                 for p in race["finishers"][k]:
                     if p == player:
                         return points(k-1)
-            else:
+            elif race["finishers"][k] == player:
                 return points(k-1)
     elif player in race["forfeits"]:
         return 0
