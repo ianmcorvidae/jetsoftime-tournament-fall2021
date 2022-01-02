@@ -2,6 +2,7 @@ import sys
 import races
 import util
 import preprocess
+import re
 
 logics = ["elo", "elohighknum", "elodesc", "eloasc", "eloten", "ff6wc", "f1", "mariokart", "mariokartavg", "simpleavg", "raster", "rasteradjusted", "raster1500", "rasterfantasy", "newfantasy", "newfantasy2", "normfit"]
 
@@ -89,7 +90,7 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Need to pass a logic type to use")
         sys.exit(1)
-    lt = sys.argv[1]
+    lt = re.sub(r"(\.py)?$", "",sys.argv[1])
     (raceranks, startval) = get_settings(lt)
     noincomplete = "--no-incomplete" in sys.argv
     plot = "--plot" in sys.argv
