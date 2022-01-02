@@ -32,5 +32,9 @@ races = [
         {"finishers": ["Xelpher", "dipwood", "Chocosura", "AzureCale", "Pseudoarc", "Tekenu", "kalarse", "akuheish", "lordbatsy", "Kyuketsuki", "Theferrell"],
          "forfeits": ["MrScruffNinjaTuna"],
          "nonparticipants": [],
-         "times": ['01:14:50', '01:18:57', '01:24:06', '01:27:40', '01:34:30', '01:36:17', '01:39:51', '1:40:52', '1:48:08', '01:49:28', '02:06:23']}
+         "times": ['01:14:50', '01:18:57', '01:24:06', '01:27:40', '01:34:30', '01:36:17', '01:39:51', '1:40:52', '1:48:08', '01:49:28', '02:06:23']},
+        {"finishers": ["Chocosura", "Pseudoarc", "Xelpher", "dipwood", "AzureCale", "akuheish", "Kyuketsuki", "kalarse", "Theferrell"],
+         "forfeits": ["lordbatsy", "Tekenu", "MrScruffNinjaTuna"],
+         "nonparticipants": [],
+         "times": ["01:52:35", "01:55:53", "02:05:09", "02:06:20", "02:10:00", "02:21:03", "02:26:02", "02:31:16", "02:51:45"]}
         ]
