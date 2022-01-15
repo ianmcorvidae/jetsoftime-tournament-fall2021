@@ -44,7 +44,7 @@ def remove_from_race(race, player):
         r["forfeits"] = f
     return r
 
-def drop_worst_n(races, n, bias_end=False):
+def get_worst_n(races, n, bias_end=False):
     new_r = [None for r in races]
     player_placings = dict()
     player_min_n = dict()
@@ -80,7 +80,10 @@ def drop_worst_n(races, n, bias_end=False):
         player_placings[player] = placings
         player_min_n[player] = min_n
         print(player, min_n)
+    return player_min_n
 
+def drop_worst_n(races, n, bias_end=False):
+    player_min_n = get_worst_n(races, n, bias_end=bias_end)
     for r in range(len(races)):
         new = copy.deepcopy(races[r])
         for player in player_min_n.keys():

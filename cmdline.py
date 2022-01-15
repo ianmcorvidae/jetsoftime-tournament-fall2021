@@ -9,10 +9,16 @@ logics = ["elo", "elohighknum", "elodesc", "eloasc", "eloten", "ff6wc", "f1", "m
 def get_settings(logic):
     raceranks = None
     startval = 0
+    hasIntegratedDrop = False
     if lt == "elo":
         import elologic
         raceranks = elologic.raceranks
         startval = 1500
+    elif lt == "elocurve":
+        import elocurvelogic
+        raceranks = elocurvelogic.raceranks
+        startval = 1500
+        hasIntegratedDrop = True
     elif lt == "elohighknum":
         import elohighknum
         raceranks = elohighknum.raceranks
@@ -73,7 +79,7 @@ def get_settings(logic):
     else:
         print("unrecognized logic type")
         sys.exit(1)
-    return (raceranks, startval)
+    return (raceranks, startval, hasIntegratedDrop)
 
 if __name__ == "__main__":
     if "--lt" in sys.argv:
@@ -90,17 +96,21 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Need to pass a logic type to use")
         sys.exit(1)
+    rs = races.races
     lt = re.sub(r"(\.py)?$", "",sys.argv[1])
-    (raceranks, startval) = get_settings(lt)
+    (raceranks, startval, hasIntegratedDrop) = get_settings(lt)
     noincomplete = "--no-incomplete" in sys.argv
     plot = "--plot" in sys.argv
     filter_too_few = "--filter" in sys.argv
-    drop_3 = "--drop-three" in sys.argv
+    drop = "--drop" in sys.argv or "--drop-ratio" in sys.argv
+    if "--drop" in sys.argv:
+        drop_n = int(sys.argv[sys.argv.index("--drop") + 1])
+    elif "--drop-ratio" in sys.argv:
+        drop_n = round(float(sys.argv[sys.argv.index("--drop-ratio") + 1]) * len(rs))
     miss_forfeit = "--miss-is-forfeit" in sys.argv
     of = None
     if '--output-file' in sys.argv:
         of = sys.argv[sys.argv.index('--output-file') + 1]
-    rs = races.races
     exclude = []
     if noincomplete:
         rs = [r for r in races.races if not r.get("incomplete", False)]
@@ -112,8 +122,11 @@ if __name__ == "__main__":
                 exclude.append(player)
     if miss_forfeit:
         rs = preprocess.miss_is_forfeit(rs)
-    if drop_3:
-        rs = preprocess.drop_worst_n(rs, 3)
+    kwargs = {'startval': startval}
+    if drop and not hasIntegratedDrop:
+        rs = preprocess.drop_worst_n(rs, drop_n)
+    elif drop:
+        kwargs["drop_count"] = drop_n
     if plot:
         import graph
         title = lt
@@ -121,8 +134,8 @@ if __name__ == "__main__":
             title = title + " (excluding ineligible)"
         if miss_forfeit:
             title = title + " (misses are forfeits)"
-        if drop_3:
-            title = title + " (drop three worst placings)"
-        graph.graph(rs, raceranks(rs, startval=startval), startval=startval, title=title, exclude=exclude, output_file=of)
-    print(util.table(rs, raceranks(rs, startval=startval), startval=startval, exclude=exclude))
+        if drop:
+            title = title + " (drop " + str(drop_n) + " worst placings)"
+        graph.graph(rs, raceranks(rs, **kwargs), startval=startval, title=title, exclude=exclude, output_file=of)
+    print(util.table(rs, raceranks(rs, **kwargs), startval=startval, exclude=exclude))
 
