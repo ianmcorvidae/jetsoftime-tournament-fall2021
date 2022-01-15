@@ -54,6 +54,7 @@ def get_settings(logic):
     elif lt == "raster":
         import rasterlogic
         raceranks = rasterlogic.raceranks
+        hasIntegratedDrop = True
     elif lt == "rasteradjusted":
         import rasteradjusted
         raceranks = rasteradjusted.raceranks

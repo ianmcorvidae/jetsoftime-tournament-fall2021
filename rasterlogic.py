@@ -1,6 +1,7 @@
 import copy
 import util
 import decimal
+import preprocess
 
 def rankdiff(nplay, expected, actual):
     #print("\t", nplay, actual-expected)
@@ -57,7 +58,7 @@ def rankdiffs(race, ranks, denom, denom_as_nplay=False, maxscore=100, minscore=1
 def first_race_denom(race):
     return len(util.finishers(race) | set(race["forfeits"]) | set(race["nonparticipants"]))
 
-def raceranks(races, startval=0, maxscore=100, minscore=10, step=-10, forfeitscore=0):
+def _raceranks(races, startval=0, maxscore=100, minscore=10, step=-10, forfeitscore=0, drop=None):
     denom = first_race_denom(races[0])
     ranks = [dict([(p, startval) for p in util.all_players(races)])] + [None for r in range(len(races))]
     print("Race 1")
@@ -70,8 +71,18 @@ def raceranks(races, startval=0, maxscore=100, minscore=10, step=-10, forfeitsco
         forfeits = set(race["forfeits"])
         diffs = rankdiffs(races[r], ranks[r], denom, False, maxscore, minscore, step, forfeitscore, startval=startval)
         for player in diffs.keys():
-            ranks[r+1][player] = int(decimal.Decimal(ranks[r+1].get(player, startval) + diffs[player]).quantize(decimal.Decimal('1'), rounding=decimal.ROUND_HALF_UP))
+            if (drop is not None) and (r in drop.get(player, [])):
+                ranks[r+1][player] = ranks[r][player]
+            else:
+                ranks[r+1][player] = int(decimal.Decimal(ranks[r+1].get(player, startval) + diffs[player]).quantize(decimal.Decimal('1'), rounding=decimal.ROUND_HALF_UP))
     return ranks
+
+def raceranks(races, startval=0, maxscore=100, minscore=10, step=-10, forfeitscore=0, drop_count=None):
+    if drop_count is None:
+        return _raceranks(races, startval=startval, maxscore=100, minscore=10, step=-10, forfeitscore=0)
+    else:
+        drops = preprocess.get_worst_n(races, drop_count)
+        return _raceranks(races, startval=startval, maxscore=100, minscore=10, step=-10, forfeitscore=0, drop=drops)
 
 if __name__ == "__main__":
     import races
