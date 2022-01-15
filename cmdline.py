@@ -107,6 +107,8 @@ if __name__ == "__main__":
         drop_n = int(sys.argv[sys.argv.index("--drop") + 1])
     elif "--drop-ratio" in sys.argv:
         drop_n = round(float(sys.argv[sys.argv.index("--drop-ratio") + 1]) * len(rs))
+    if drop and drop_n > len(rs) - 1:
+        drop_n = len(rs) - 1
     miss_forfeit = "--miss-is-forfeit" in sys.argv
     of = None
     if '--output-file' in sys.argv:
