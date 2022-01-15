@@ -4,7 +4,7 @@ import util
 import preprocess
 import re
 
-logics = ["elo", "elohighknum", "elodesc", "eloasc", "eloten", "ff6wc", "f1", "mariokart", "mariokartavg", "simpleavg", "raster", "rasteradjusted", "raster1500", "rasterfantasy", "newfantasy", "newfantasy2", "normfit"]
+logics = ["elo", "elohighknum", "elodesc", "eloasc", "eloten", "ff6wc", "f1", "mariokart", "mariokartavg", "simpleavg", "raster", "rasteradjusted", "raster1500", "rasterfantasy", "newfantasy", "newfantasy2", "normfit", "elocurve"]
 
 def get_settings(logic):
     raceranks = None

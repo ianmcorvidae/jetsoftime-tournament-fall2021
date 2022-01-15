@@ -54,3 +54,6 @@ newfantasy2: new experimental "fantasy" rankings, take 2:
 
 normfit: each week, fit finish times to a scipy.stats.skewnorm distribution; scores are multiplied percentiles. overall score is an exponentially weighted moving average with a starting value corresponding to 50th percentile and (for now) an alpha of 0.25
 ![normfit](./img/normfit.png)
+
+elocurve: fit finish times like normfit, but use them to calculate a score to use for elo (ff6wc-style, with post-rounding and multiplier of 3). S is set to 0.5 plus half the difference between each pair's survival factor (which is 1-cdf), a number which is close to 1 for the best times and close to 0 for the worst. So, a close win will be a bit above 0.5, a close loss will be a bit below it, etc.
+![elocurve](./img/elocurve.png)
