@@ -5,3 +5,4 @@ __pycache__/
 vids/
 spoilerread.py
 *.swp
+races-*.py
