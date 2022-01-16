@@ -72,7 +72,7 @@ def get_worst_n(races, n, bias_end=False):
                 toremove = min([placings[x] for x in min_n])
                 toremove_idx = [placings[x] for x in min_n].index(toremove)
                 min_n[toremove_idx] = r
-            elif placings[r] == max([placings[x] for x in min_n]):
+            elif placings[r] == min([placings[x] for x in min_n]):
                 # equal to existing max, so replace if it's worse than the lowest placing, or always replace if we're end-biased
                 toremove = min([placings[x] for x in min_n])
                 if bias_end or (toremove < placings[r]):
