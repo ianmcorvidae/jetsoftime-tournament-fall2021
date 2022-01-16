@@ -92,8 +92,12 @@ if __name__ == "__main__":
         print("args:")
         print("--no-incomplete: exclude races marked incomplete in races.py")
         print("--filter: filter out players with more than 3 missed races")
+        print("--filter-count <n>: change --filter to filter those with <n> missed races instead of 3")
+        print("--filter-count-ratio <n>: change --filter to filter those with round(<n>*number of races) missed races instead of 3")
         print("--plot: generate a plot and either show it or output it depending on --output-file")
         print("--output-file <file>: set plot output file to <file>. Will do weird things if you don't provide a filename, so be good")
+        print("--drop <n>: drop the worst <n> results. Some logic types do this directly within themselves, the rest do it by preprocessing the races to remove the worst <n>")
+        print("--drop-ratio <n>: like --drop, but <n> should be a ratio between 0 and 1, which will be multiplied by the number of races and then rounded to get the actual number of dropped races.")
     if len(sys.argv) < 2:
         print("Need to pass a logic type to use")
         sys.exit(1)
@@ -103,6 +107,12 @@ if __name__ == "__main__":
     noincomplete = "--no-incomplete" in sys.argv
     plot = "--plot" in sys.argv
     filter_too_few = "--filter" in sys.argv
+    if "--filter-count" in sys.argv:
+        filter_count = int(sys.argv[sys.argv.index("--filter-count") + 1])
+    elif "--filter-count-ratio" in sys.argv:
+        filter_count = round(float(sys.argv[sys.argv.index("--filter-count-ratio") + 1]) * len(rs))
+    else:
+        filter_count = 3
     drop = "--drop" in sys.argv or "--drop-ratio" in sys.argv
     if "--drop" in sys.argv:
         drop_n = int(sys.argv[sys.argv.index("--drop") + 1])
@@ -121,7 +131,7 @@ if __name__ == "__main__":
         for player in util.all_players(rs):
             player_races = sum([1 for r in rs if (player in util.finishers(r) or player in r["forfeits"])])
             complete_races = sum([1 for r in rs if not r.get("incomplete", False)])
-            if complete_races - player_races > 3:
+            if complete_races - player_races > filter_count:
                 exclude.append(player)
     if miss_forfeit:
         rs = preprocess.miss_is_forfeit(rs)
@@ -134,7 +144,7 @@ if __name__ == "__main__":
         import graph
         title = lt
         if filter_too_few:
-            title = title + " (excluding ineligible)"
+            title = title + " (excluding " + str(filter_count) + "+ missed)"
         if miss_forfeit:
             title = title + " (misses are forfeits)"
         if drop:
