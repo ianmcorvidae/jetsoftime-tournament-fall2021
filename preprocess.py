@@ -67,7 +67,7 @@ def get_worst_n(races, n, bias_end=False):
                 placings[r] = 1000000
             if len(min_n) < n:
                 min_n.append(r)
-            elif placings[r] > max([placings[x] for x in min_n]):
+            elif placings[r] > min([placings[x] for x in min_n]):
                 # this is strictly worse, add it
                 toremove = min([placings[x] for x in min_n])
                 toremove_idx = [placings[x] for x in min_n].index(toremove)
@@ -80,7 +80,7 @@ def get_worst_n(races, n, bias_end=False):
                     min_n[toremove_idx] = r
         player_placings[player] = placings
         player_min_n[player] = min_n
-        print(player, min_n)
+        print(player, min_n, placings)
     return player_min_n
 
 def drop_worst_n(races, n, bias_end=False):
